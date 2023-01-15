@@ -1,26 +1,24 @@
 package com.berkay.order.controller;
 
+import com.berkay.order.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api")
 public class OrderController {
     @Autowired
-    KafkaTemplate<String, String> kafkaTemplate;
-
+    KafkaTemplate<String, Order> kafkaTemplate;
     private static final String TOPIC = "orders";
 
-    @GetMapping("/publish/{message}")
-    public String publishMessage(@PathVariable("message")
-                                 final String message)
-    {
-
+    @PostMapping("/publish")
+    public String publishMessage(@RequestBody Order order) {
         // Sending the message
-        kafkaTemplate.send(TOPIC, message);
-
+        kafkaTemplate.send(TOPIC, order);
         return "Order Published Successfully";
     }
 }

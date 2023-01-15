@@ -1,18 +1,13 @@
-package com.berkay.order.consumer.consumer;// Java Program to Illustrate Kafka Consumer
-// Importing required classes
-
+package com.berkay.order.consumer.consumer;
+import com.berkay.order.consumer.model.Order;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
-
-// Class
 public class KafkaConsumer {
-    @KafkaListener(topics = "orders", groupId = "order")
-
-    // Method
-    public void consume(String message) {
+    @KafkaListener(topics = "orders", groupId = "order", containerFactory = "concurrentKafkaListenerContainerFactory")
+    public void consume(Order order) {
         // Print statement
-        System.out.println("message = " + message);
+        System.out.println("message = " + order);
     }
 }
